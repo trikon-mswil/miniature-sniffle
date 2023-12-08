@@ -22,12 +22,20 @@
             padding: 20px;
             border-radius: 8px;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            width: 80%; /* Adjust the width for larger screens */
+            max-width: 400px; /* Maximum width for smaller screens */
         }
 
         video {
             width: 100%;
             background-color: #000; /* Dark video background color */
             border-radius: 8px;
+        }
+
+        @media screen and (max-width: 600px) {
+            #video-container {
+                width: 90%; /* Adjust the width for smaller screens */
+            }
         }
     </style>
     <title>Dark Video Player</title>
@@ -37,7 +45,7 @@
 
     <div id="video-container">
         <video id="video-player" controls>
-            <source src="falling.mp4" type="video/mp4">
+            <source src="path/to/your/video.mp4" type="video/mp4">
             Your browser does not support the video tag.
         </video>
     </div>
