@@ -4,13 +4,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<a href="http://localhost:5500/MainFile/" id="logo-link">
+    <img src="MusicVideoPlayerSource/images/logo.png    " alt="Your Logo" id="logo-image">
+</a>
+
     <style>
         body {
-            font-family: 'Arial', sans-serif;
+            font-family: 'Roboto', sans-serif;
             margin: 0;
             padding: 0;
-            background-color: #111; /* Dark background color */
-            color: #fff; /* Text color */
+            background-color: #f9f9f9;
+            color: #333;
+            transition: background-color 0.5s ease, color 0.5s ease;
+        }
+
+        body.dark-mode {
+            background-color: #333;
+            color: #fff;
+        }
+
+        ::-webkit-scrollbar {
+            display: none;
         }
 
         #video-container {
@@ -18,37 +32,252 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            background-color: #333; /* Dark container background color */
+            display: grid;
+            grid-template-columns: 70% 30%;
+            align-items: center;
+            gap: 20px;
             padding: 20px;
-            border-radius: 8px;
+            background-color: #333;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            width: 80%; /* Adjust the width for larger screens */
-            max-width: 400px; /* Maximum width for smaller screens */
+            border-radius: 8px;
+            height: 550px;
+            width: 1200px;
+            z-index: 0;
         }
 
         video {
             width: 100%;
-            background-color: #000; /* Dark video background color */
+            background-color: #000;
             border-radius: 8px;
         }
 
-        @media screen and (max-width: 600px) {
-            #video-container {
-                width: 90%; /* Adjust the width for smaller screens */
-            }
+        #playlist-container {
+            max-height: 300px;
+            overflow-y: auto;
+            padding-right: 20PX;
         }
+
+        #playlist {
+            list-style: none;
+            padding: 0;
+            text-align: left;
+        }
+
+        .playlist-item {
+            cursor: pointer;
+            padding: 15px;
+            border: 1px solid #e0e0e0;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            background-color: #333;
+            border-radius: 8px;
+            transition: background-color 0.3s ease;
+        }
+
+        .playlist-item:hover {
+            background-color: #444;
+        }
+
+        .playlist-item img {
+            width: 70px;
+            height: 70px;
+            object-fit: cover;
+            border-radius: 4px;
+            margin-right: 15px;
+        }
+
+        .playlist-item .info {
+            flex-grow: 1;
+        }
+
+        .playlist-item h3 {
+            margin: 0 0 5px 0;
+            font-size: 16px;
+            color: #fff;
+        }
+
+        .playlist-item p {
+            margin: 0;
+            font-size: 14px;
+            color: #bbb;
+        }
+
+        .toggle-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            display: flex;
+            align-items: center;
+            color: #ff0000;
+        }
+
+        .toggle-container label {
+            margin-right: 10px;
+        }
+
+        .toggle-container input {
+            cursor: pointer;
+        }
+
+        #search-container {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            align-items: center;
+            color: #333;
+            z-index: 1;
+        }
+
+        #search-input {
+            width: 250PX;
+            padding: 8px;
+            margin-right: 10px;
+            border: 1px solid #ccc;
+            border-radius: 40px;
+        }
+
+        #search-btn {
+            cursor: pointer;
+            padding: 8px;
+            background-color: #fff;
+            border: 1px solid #ccc;
+            border-radius: 40px;
+        }
+
+        /* Add this style to your existing CSS */
+#logo-link {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    z-index: 2; /* Ensure it's above other elements */
+    cursor: pointer;
+}
+
+#logo-image {
+    width: 100px; /* Adjust the size as needed */
+    height: auto; /* Maintain aspect ratio */
+    border-radius: 70%; /* Optional: Apply border-radius for a circular logo */
+}
+
+
     </style>
-    <title>Dark Video Player</title>
+    <title>Video Player with Playlist</title>
 </head>
 
 <body>
 
+    <div class="toggle-container">
+        <label for="dark-mode">Dark Mode:</label>
+        <input type="checkbox" id="dark-mode" onchange="toggleDarkMode()">
+    </div>
+
+    <div id="search-container">
+        <input type="text" id="search-input" placeholder="Search videos">
+        <button id="search-btn" onclick="searchVideos()">Search</button>
+    </div>
+
     <div id="video-container">
-        <video id="video-player" controls>
-            <source src="falling.mp4" type="video/mp4">
+        <video id="video-player" controls preload="metadata">
+            <source src="" type="video/mp4">
             Your browser does not support the video tag.
         </video>
+        <div id="playlist-container">
+            <ul id="playlist"></ul>
+        </div>
     </div>
+
+    <script>
+               document.addEventListener("DOMContentLoaded", function () {
+            const videoPlayer = document.getElementById('video-player');
+            const playlist = document.getElementById('playlist');
+            const darkModeToggle = document.getElementById('dark-mode');
+            const searchInput = document.getElementById('search-input');
+
+            let videoList = [
+            { category: 'Category 1', name: 'Manave - The PropheC X Mitraz', source: 'MusicVideoPlayerSource/Videos/animal.mkv', thumbnail: 'MusicVideoPlayerSource/Images/Manave-Lyrics.jpg' },
+            { category: 'Category 1', name: 'Fakira _ Sanam', source: 'MusicVideoPlayerSource/Videos/Fakira _ Sanam.mp4', thumbnail: 'MusicVideoPlayerSource/Images/Fakira _ Sanam.jpg' },
+            { category: 'Category 2', name: 'MITRAZ - Saajna', source: 'MusicVideoPlayerSource/Videos/MITRAZ - Saajna (Official Video).mp4', thumbnail: 'MusicVideoPlayerSource/Images/thumbnail3.jpg' },
+            { category: 'Category 2', name: 'Why This Kolaveri Di', source: 'MusicVideoPlayerSource/Videos/3 - Why This Kolaveri Di Official Video _ Dhanush, Anirudh.mp4', thumbnail: 'MusicVideoPlayerSource/Images/thumbnail4.jpg' },
+            { category: 'Category 3', name: 'Nightout - 3rdhour', source: 'MusicVideoPlayerSource/Videos/Nightout (720p).mp4', thumbnail: 'MusicVideoPlayerSource/Images/thumbnail3.jpg' },
+            { category: 'Category 3', name: 'Fallin - 3rdhour', source: 'MusicVideoPlayerSource/Videos/Fallin--(720p).mp4', thumbnail: 'MusicVideoPlayerSource/Images/thumbnail4.jpg' },
+            // Add more videos as needed
+          ];
+
+            function populatePlaylist(videoArray) {
+                playlist.innerHTML = "";
+
+                videoArray.forEach((video, index) => {
+                    const listItem = document.createElement('li');
+                    listItem.className = 'playlist-item';
+
+                    const thumbnail = document.createElement('img');
+                    thumbnail.src = video.thumbnail;
+                    thumbnail.alt = video.name + ' thumbnail';
+                    listItem.appendChild(thumbnail);
+
+                    const info = document.createElement('div');
+
+                    const title = document.createElement('h3');
+                    title.textContent = video.name;
+                    info.appendChild(title);
+
+                    listItem.addEventListener('click', function () {
+                        videoPlayer.src = video.source;
+                        videoPlayer.load();
+                        videoPlayer.play();
+                        videoPlayer.setAttribute('preload', 'auto');
+                    });
+
+                    listItem.appendChild(info);
+                    playlist.appendChild(listItem);
+
+                    if (index < videoArray.length - 1) {
+                        const separator = document.createElement('hr');
+                        playlist.appendChild(separator);
+                    }
+                });
+            }
+
+            if (videoList.length > 0) {
+                videoPlayer.src = videoList[0].source;
+                videoPlayer.load();
+                videoPlayer.play();
+                videoPlayer.setAttribute('preload', 'auto');
+            } else {
+                videoPlayer.setAttribute('preload', 'metadata');
+            }
+
+            window.toggleDarkMode = function () {
+                document.body.classList.toggle('dark-mode', darkModeToggle.checked);
+            };
+
+            window.searchVideos = function () {
+                const searchTerm = searchInput.value.toLowerCase();
+
+                const filteredVideos = videoList.filter(video => video.name.toLowerCase().includes(searchTerm));
+
+                if (filteredVideos.length > 0) {
+                    videoPlayer.src = filteredVideos[0].source;
+                    videoPlayer.load();
+                    videoPlayer.play();
+                    videoPlayer.setAttribute('preload', 'auto');
+                }
+
+                populatePlaylist(filteredVideos);
+            };
+
+            const initialCategory = videoList.length > 0 ? videoList[0].category : '';
+            const initialVideosInCategory = videoList.filter(video => video.category === initialCategory);
+            populatePlaylist(initialVideosInCategory);
+
+            videoPlayer.addEventListener('ended', function () {
+                videoPlayer.setAttribute('preload', 'metadata');
+            });
+        });
+    </script>
 
 </body>
 
