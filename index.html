@@ -51,7 +51,7 @@
         #playlist-container {
             max-height: 300px;
             overflow-y: auto;
-            padding-right: 20PX;
+            padding-right: 20px; /* Fix typo in property */
         }
 
         #playlist {
@@ -129,7 +129,7 @@
         }
 
         #search-input {
-            width: 250PX;
+            width: 250px; /* Fix typo in property value */
             padding: 8px;
             margin-right: 10px;
             border: 1px solid #ccc;
@@ -145,21 +145,19 @@
         }
 
         /* Add this style to your existing CSS */
-#logo-link {
-    position: fixed;
-    top: 20px;
-    left: 20px;
-    z-index: 2; /* Ensure it's above other elements */
-    cursor: pointer;
-}
+        #logo-link {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 2; /* Ensure it's above other elements */
+            cursor: pointer;
+        }
 
-#logo-image {
-    width: 100px; /* Adjust the size as needed */
-    height: auto; /* Maintain aspect ratio */
-    border-radius: 70%; /* Optional: Apply border-radius for a circular logo */
-}
-
-
+        #logo-image {
+            width: 100px; /* Adjust the size as needed */
+            height: auto; /* Maintain aspect ratio */
+            border-radius: 70%; /* Optional: Apply border-radius for a circular logo */
+        }
     </style>
     <title>Video Player with Playlist</title>
 </head>
@@ -187,21 +185,21 @@
     </div>
 
     <script>
-               document.addEventListener("DOMContentLoaded", function () {
+        document.addEventListener("DOMContentLoaded", function () {
             const videoPlayer = document.getElementById('video-player');
             const playlist = document.getElementById('playlist');
             const darkModeToggle = document.getElementById('dark-mode');
             const searchInput = document.getElementById('search-input');
 
             let videoList = [
-            { category: 'Category 1', name: 'Falling', source: 'videos/falling.mp4', thumbnail: '' },
-            { category: 'Category 1', name: 'Fakira _ Sanam', source: 'MusicVideoPlayerSource/Videos/Fakira _ Sanam.mp4', thumbnail: 'MusicVideoPlayerSource/Images/Fakira _ Sanam.jpg' },
-            { category: 'Category 2', name: 'MITRAZ - Saajna', source: 'MusicVideoPlayerSource/Videos/MITRAZ - Saajna (Official Video).mp4', thumbnail: 'MusicVideoPlayerSource/Images/thumbnail3.jpg' },
-            { category: 'Category 2', name: 'Why This Kolaveri Di', source: 'MusicVideoPlayerSource/Videos/3 - Why This Kolaveri Di Official Video _ Dhanush, Anirudh.mp4', thumbnail: 'MusicVideoPlayerSource/Images/thumbnail4.jpg' },
-            { category: 'Category 3', name: 'Nightout - 3rdhour', source: 'MusicVideoPlayerSource/Videos/Nightout (720p).mp4', thumbnail: 'MusicVideoPlayerSource/Images/thumbnail3.jpg' },
-            { category: 'Category 3', name: 'Fallin - 3rdhour', source: 'MusicVideoPlayerSource/Videos/Fallin--(720p).mp4', thumbnail: 'MusicVideoPlayerSource/Images/thumbnail4.jpg' },
-            // Add more videos as needed
-          ];
+                { category: 'Category 1', name: 'Falling', source: 'videos/falling.mp4', thumbnail: '' },
+                { category: 'Category 1', name: 'Fakira _ Sanam', source: 'MusicVideoPlayerSource/Videos/Fakira _ Sanam.mp4', thumbnail: 'MusicVideoPlayerSource/Images/Fakira _ Sanam.jpg' },
+                { category: 'Category 2', name: 'MITRAZ - Saajna', source: 'MusicVideoPlayerSource/Videos/MITRAZ - Saajna (Official Video).mp4', thumbnail: 'MusicVideoPlayerSource/Images/thumbnail3.jpg' },
+                { category: 'Category 2', name: 'Why This Kolaveri Di', source: 'MusicVideoPlayerSource/Videos/3 - Why This Kolaveri Di Official Video _ Dhanush, Anirudh.mp4', thumbnail: 'MusicVideoPlayerSource/Images/thumbnail4.jpg' },
+                { category: 'Category 3', name: 'Nightout - 3rdhour', source: 'MusicVideoPlayerSource/Videos/Nightout (720p).mp4', thumbnail: 'MusicVideoPlayerSource/Images/thumbnail3.jpg' },
+                { category: 'Category 3', name: 'Fallin - 3rdhour', source: 'MusicVideoPlayerSource/Videos/Fallin--(720p).mp4', thumbnail: 'MusicVideoPlayerSource/Images/thumbnail4.jpg' },
+                // Add more videos as needed
+            ];
 
             function populatePlaylist(videoArray) {
                 playlist.innerHTML = "";
