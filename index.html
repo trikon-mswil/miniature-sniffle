@@ -217,11 +217,12 @@
                     info.appendChild(title);
 
                     listItem.addEventListener('click', function () {
-                        videoPlayer.src = video.source;
-                        videoPlayer.load();
-                        videoPlayer.play();
-                        videoPlayer.setAttribute('preload', 'auto');
+                    videoPlayer.src = video.source;
+                    videoPlayer.load();
+                    videoPlayer.play();
+                    videoPlayer.setAttribute('preload', 'metadata'); 
                     });
+
 
                     listItem.appendChild(info);
                     playlist.appendChild(listItem);
